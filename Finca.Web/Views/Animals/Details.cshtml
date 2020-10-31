@@ -1,0 +1,162 @@
+﻿@model Finca.Web.Models.AnimalViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tournament</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Nombre)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.NumeroFinca)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.NumeroFinca)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Madre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Madre)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Padre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Padre)
+                </dd>
+                <dt>
+                    # Crias
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Crias.Count)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-4">
+            @if (!string.IsNullOrEmpty(Model.FotoPath))
+            {
+                <img src="@Url.Content(Model.FotoPath)" alt="Image" style="width:150px;height:150px;max-width: 100%; height: auto;" />
+            }
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="AddGroup" asp-route-id="@Model.Id" class="btn btn-primary">Add Group</a>
+    <a asp-action="Index" class="btn btn-success">Back to List</a>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Crias</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FotoPath)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Nombre)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaNacimiento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.PesoNacimiento)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Padre)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Madre)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.NumeroFinca)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Sexo)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Crias)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.FotoPath))
+                                    {
+                                        <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Nombre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PesoNacimiento)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Padre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Madre)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumeroFinca)
+                                </td>
+
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Sexo)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="/js/deleteDialog.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Tournaments/Delete/', false);
+        });
+    </script>
+}

@@ -1,0 +1,76 @@
+﻿@model Finca.Web.Data.Entities.AnimalEntity
+
+<div class="form-group">
+    <label asp-for="Nombre" class="control-label"></label>
+    <input asp-for="Nombre" class="form-control" />
+    <span asp-validation-for="Nombre" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="FechaNacimiento" class="control-label"></label>
+    <input asp-for="FechaNacimiento" class="form-control" />
+    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="PesoNacimiento" class="control-label"></label>
+    <input asp-for="PesoNacimiento" class="form-control" />
+    <span asp-validation-for="PesoNacimiento" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="NumeroFinca" class="control-label"></label>
+    <input asp-for="NumeroFinca" class="form-control" />
+    <span asp-validation-for="NumeroFinca" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="MarcaInterno" class="control-label"></label>
+    <input asp-for="MarcaInterno" class="form-control" />
+    <span asp-validation-for="MarcaInterno" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Tatuaje" class="control-label"></label>
+    <input asp-for="Tatuaje" class="form-control" />
+    <span asp-validation-for="Tatuaje" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Muesca" class="control-label"></label>
+    <input asp-for="Muesca" class="form-control" />
+    <span asp-validation-for="Muesca" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Chapeta" class="control-label"></label>
+    <input asp-for="Chapeta" class="form-control" />
+    <span asp-validation-for="Chapeta" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Arete" class="control-label"></label>
+    <input asp-for="Arete" class="form-control" />
+    <span asp-validation-for="Arete" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Marca" class="control-label"></label>
+    <input asp-for="Marca" class="form-control" />
+    <span asp-validation-for="Marca" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Chip" class="control-label"></label>
+    <input asp-for="Chip" class="form-control" />
+    <span asp-validation-for="Chip" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Observaciones" class="control-label"></label>
+    <input asp-for="Observaciones" class="form-control" />
+    <span asp-validation-for="Observaciones" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="FotoPath" class="control-label"></label>
+    <input asp-for="FotoPath" class="form-control" />
+    <span asp-validation-for="FotoPath" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Sexo" class="control-label"></label>  
+
+    <select asp-for="Sexo" asp-items="Html.GetEnumSelectList<Sex>()" class="form-control">
+        <option selected="selected" value="">[Seleccione...]</option>>
+    </select>
+    <span asp-validation-for="Sexo" class="text-danger"></span>
+</div>
+           
