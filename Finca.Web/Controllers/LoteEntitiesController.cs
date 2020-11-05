@@ -52,7 +52,8 @@ namespace Finca.Web.Controllers
         // GET: LoteEntities/Create
         public IActionResult Create()
         {
-            return View();
+            LoteEntity lote = new LoteEntity();
+            return View(lote);
         }
 
         // POST: LoteEntities/Create

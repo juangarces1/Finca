@@ -1,0 +1,128 @@
+﻿@model Finca.Web.Models.ListaImagesViewModel
+
+@if(Model.Fotos.Count > 0) 
+{
+    <div class="row">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+        <ol class="carousel-indicators">
+            @{int conta = 0; }
+            @for (var i = 0; i < Model.Fotos.Count; i++)
+            {
+
+                if (conta == 0)
+                {
+                    <li data-target="#myCarousel" data-slide-to="@i" class="active"></li>
+                    conta = 1;
+                }
+                else
+                {
+                    <li data-target="#myCarousel" data-slide-to="@i"></li>
+                }
+            }
+
+
+        </ol>
+        <div class="carousel-inner" role="listbox">
+            @{int cont = 0; }
+            @foreach (var item in Model.Fotos)
+            {
+                var itemDinamico = cont++ == 0 ? "item active" : "item";
+
+                <div class="@itemDinamico">
+                    <img src="@Url.Content(item.FotoPath)" alt="" class="img-responsive" />
+                </div>
+            }
+        </div>
+
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>
+    <br />
+ }
+<br />
+<p>
+    <a asp-action="AddFoto" asp-route-id="@Model.AnimalId" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i>Agregar Foto</a>
+</p>
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Animales</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="MyTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <h5>Foto</h5>
+                            </th>
+                            
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Fotos)
+                        {
+                            <tr>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.FotoPath))
+                                    {
+                                        <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+                                    }
+                                </td>
+                               
+                                <td>
+
+
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<p>
+    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+
+</p>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Animals/DeleteFoto/' + item_to_delete;
+            });
+        });
+    </script>
+}
+

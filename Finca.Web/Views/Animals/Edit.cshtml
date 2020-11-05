@@ -20,23 +20,18 @@
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Padre" class="control-label"></label>
+                <label asp-for="Padres" class="control-label"></label>
                 <select asp-for="Padre" asp-items="Model.Padres" class="form-control"></select>
                 <span asp-validation-for="Padre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Madre" class="control-label"></label>
-                <select asp-for="Madre" asp-items="Model.Madres" class="form-control"></select>
-                <span asp-validation-for="Madre" class="text-danger"></span>
-            </div>
+            </div>          
 
             <div class="form-group">
-                <label asp-for="TypeAnimalId" class="control-label"></label>
+                <label asp-for="Tipos" class="control-label"></label>
                 <select asp-for="TypeAnimalId" asp-items="Model.Tipos" class="form-control"></select>
                 <span asp-validation-for="TypeAnimalId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LoteId" class="control-label"></label>
+                <label asp-for="Lotes" class="control-label"></label>
                 <select asp-for="LoteId" asp-items="Model.Lotes" class="form-control"></select>
                 <span asp-validation-for="LoteId" class="text-danger"></span>
             </div>
@@ -46,15 +41,15 @@
             <partial name="_Animal" />
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                <input type="submit" value="Editar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-success">Regresar</a>
             </div>
         </form>
     </div>
     <div class="col-md-4">
         @if (!string.IsNullOrEmpty(Model.FotoPath))
         {
-            <img src="@Url.Content(Model.FotoPath)" alt="Image" style="width:300px;height:150px;max-width: 100%; height: auto;" />
+            <img src="@Url.Content(Model.FotoPath)" alt="Image" style="width:600px;height:400px;max-width: 100%; height: auto;" />
         }
     </div>
 </div>

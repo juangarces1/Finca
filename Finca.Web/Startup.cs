@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace Finca.Web
 {
@@ -34,8 +36,12 @@ namespace Finca.Web
                 options.UseSqlServer(
                     Configuration.GetConnectionString("FincaConnection")));
             services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                   .AddDefaultTokenProviders();
             services.AddTransient<SeedDb>();
+
+          
+
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();

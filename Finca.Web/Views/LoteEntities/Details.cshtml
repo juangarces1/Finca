@@ -6,14 +6,20 @@
 
 <h2>Detalle</h2>
 
-<div>  
-   
+<div>
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            <h5>Numero Animales</h5>
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Animals.Count)
         </dd>
     </dl>
 </div>
@@ -54,7 +60,7 @@
                                 <td>
                                     @if (!string.IsNullOrEmpty(item.FotoPath))
                                     {
-                                        <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:150px;height:150px;max-width: 100%; height: auto;" />
+                                        <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:100px;height:100px;max-width: 75%; height: auto;" />
                                     }
                                 </td>
                                 <td>
@@ -73,3 +79,26 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/LoteEntities/Delete/' + item_to_delete;
+            });
+        });
+    </script>
+}
+

@@ -16,5 +16,9 @@ namespace Finca.Web.Helpers
         IEnumerable<SelectListItem> GetLotes();
 
         IEnumerable<SelectListItem> GetTipos();
+
+        IEnumerable<SelectListItem> GetVets();
+
+        IEnumerable<SelectListItem> GetPadres();
     }
 }

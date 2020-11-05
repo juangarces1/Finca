@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Finca.Web.Data;
+﻿using Finca.Web.Data;
 using Finca.Web.Data.Entities;
 using Finca.Web.Helpers;
 using Finca.Web.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Remotion.Linq.Clauses;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Finca.Web.Controllers
 {
@@ -17,29 +21,32 @@ namespace Finca.Web.Controllers
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
         private readonly ICombosHelper _combosHelper;
+        private readonly IHostingEnvironment _hostingEnvironment;
+
 
         public AnimalsController(ApplicationDbContext context,
             IImageHelper imageHelper,
             IConverterHelper converterHelper,
-              ICombosHelper combosHelper)
+              ICombosHelper combosHelper,
+              IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _imageHelper = imageHelper;
             _converterHelper = converterHelper;
             _combosHelper = combosHelper;
-
+            _hostingEnvironment = hostingEnvironment;
         }
         public IActionResult Index()
         {
-            var list = _context.Animals.ToList();
+            var list = _context.Animals.OrderBy(a => a.NumeroFinca).ToList();
             return View(list);
         }
 
-        public  IActionResult Create()
+        public IActionResult Create()
         {
+          
             AnimalViewModel animal = new AnimalViewModel();
-            animal.Madres = _combosHelper.GetComboAnimal(Sex.Hembra);
-            animal.Padres = _combosHelper.GetComboAnimal(Sex.Macho);
+            animal.Padres = _combosHelper.GetPadres();
             animal.Lotes = _combosHelper.GetLotes();
             animal.Tipos = _combosHelper.GetTipos();
             return View(animal);
@@ -52,14 +59,53 @@ namespace Finca.Web.Controllers
             if (ModelState.IsValid)
             {
                 string path = string.Empty;
-
+                bool flagFoto = true;
                 if (model.ImageFile != null)
                 {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Animals");
+                    flagFoto = false;
                 }
-
+                else
+                {
+                    switch (model.TypeAnimalId)
+                    {
+                        case 1:
+                            path = "~/images/Animals/Novillo.jpg";
+                            break;
+                        case 2:
+                            path = "~/images/Animals/Novillo.jpg";
+                            break;
+                        case 3:
+                            path = "~/images/Animals/Vaca.jpg";
+                            break;
+                        case 4:
+                            path = "~/images/Animals/noimage.jpg";
+                            break;
+                      
+                        case 5:
+                            path = "~/images/Animals/ternero.jpg";
+                            break;
+                        case 6:
+                            path = "~/images/Animals/ternero.jpg";
+                            break;
+                    }
+                   
+                }
                 AnimalEntity animal = _converterHelper.ToAnimal(model, path, true);
                 _context.Add(animal);
+                if (flagFoto == false)
+                {
+                    var foto = new FotosAnimal
+                    {
+                        Animal = animal,
+                        AnimalId = animal.Id,
+                        FotoPath = path,
+
+                    };
+
+                    _context.FotosAnimal.Add(foto);
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -74,16 +120,34 @@ namespace Finca.Web.Controllers
                 return NotFound();
             }
 
-            AnimalEntity animal =  _context.Animals
+            AnimalEntity animal = _context.Animals
                 .Find(id);
             if (animal == null)
             {
                 return NotFound();
             }
-
             _context.Animals.Remove(animal);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("updating"))
+                {
+                    ModelState.AddModelError(string.Empty, $"No se puede Borrar el animal # {animal.NumeroFinca} tiene Relaciones con otras entidades.");
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, ex.Message);
+                }
+                return RedirectToAction(nameof(Index));
+
+            }
+
+           
         }
 
 
@@ -94,14 +158,64 @@ namespace Finca.Web.Controllers
                 return NotFound();
             }
 
-            AnimalEntity animal =  _context.Animals.Find(id);
-            List<AnimalEntity> hijos =  _context.Animals.Where(a => a.Padre == id || a.Madre == id).ToList();
+            AnimalEntity animal = _context.Animals.Find(id);
+
+
+            LoteEntity lotenombre = _context.Lotes.Find(animal.LoteId);
+            List<AnimalEntity> hijos = _context.Animals.Where(a => a.Padre == animal.NumeroFinca || a.Madre == animal.NumeroFinca).OrderBy(a => a.FechaNacimiento).ToList();
             if (animal == null)
             {
                 return NotFound();
             }
-            AnimalViewModel animale =  _converterHelper.ToAnimalViewModel(animal, hijos);
+            AnimalViewModel animale = _converterHelper.ToAnimalViewModel(animal, hijos);
+            if (animal.Sexo == Sex.Hembra)
+            {
+                animale.Tiempo = DiasDesdeUltimoParto(animal);
+            }
+            animale.Pictures = _context.FotosAnimal.Where(f => f.AnimalId == id).ToList();
+            animale.Arbol = ArbolG(animal);
+            animale.NombreLote = lotenombre.Name;
+            animale.AnimalId = animal.Id;
             return View(animale);
+        }
+
+        public List<AnimalEntity> ArbolG(AnimalEntity animal)
+        {
+            List<AnimalEntity> tree = new List<AnimalEntity>();
+
+
+            if (animal.Madre != 0)
+            {
+                int x = animal.Madre;
+                while (x != 0)
+                {
+                    AnimalEntity aniAux = _context.Animals.Where(a => a.NumeroFinca == x).FirstOrDefault();
+                    if (aniAux != null)
+                    {
+                        tree.Add(aniAux);
+                        x = aniAux.Madre;
+                    }
+                    else
+                    {
+                        x = 0;
+                    }
+                }
+            }
+            return tree;
+        }
+
+        public TimeSpan DiasDesdeUltimoParto(AnimalEntity animal)
+        {
+
+            AnimalEntity aniAux = _context.Animals.Where(a => a.Madre == animal.NumeroFinca).OrderBy(a => a.FechaNacimiento).LastOrDefault();
+            if (aniAux != null)
+            {
+                TimeSpan tiempo = (animal.FechaNacimiento - aniAux.FechaNacimiento);
+                return tiempo;
+            }
+            TimeSpan tm = new TimeSpan();
+
+            return tm;
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -116,11 +230,9 @@ namespace Finca.Web.Controllers
             {
                 return NotFound();
             }
-
-            AnimalViewModel animal = _converterHelper.ToAnimalViewModel(animale);
             
-            animal.Madres = _combosHelper.GetComboAnimal(Sex.Hembra);
-            animal.Padres = _combosHelper.GetComboAnimal(Sex.Macho);
+            AnimalViewModel animal = _converterHelper.ToAnimalViewModel(animale);
+            animal.Padres = _combosHelper.GetPadres();
             animal.Lotes = _combosHelper.GetLotes();
             animal.Tipos = _combosHelper.GetTipos();
             return View(animal);
@@ -133,13 +245,31 @@ namespace Finca.Web.Controllers
             if (ModelState.IsValid)
             {
                 string path = model.FotoPath;
-
+                bool flagFoto = true;
                 if (model.ImageFile != null)
                 {
                     path = await _imageHelper.UploadImageAsync(model.ImageFile, "Animals");
+                  
+                    flagFoto = false;                    
+
                 }
 
                 AnimalEntity animal = _converterHelper.ToAnimal(model, path, false);
+                if (flagFoto == false)
+                {
+                    var foto = new FotosAnimal{
+                    Animal = animal,
+                    AnimalId = animal.Id,
+                    FotoPath = path,
+                   
+                    };
+
+                    _context.FotosAnimal.Add(foto);
+                        
+
+                }
+
+           
                 _context.Update(animal);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -147,5 +277,229 @@ namespace Finca.Web.Controllers
 
             return View(model);
         }
+
+        public IActionResult ListaFotos(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            AnimalEntity animal = _context.Animals
+                .Find(id);
+            if (animal == null)
+            {
+                return NotFound();
+            }
+            var list = _context.FotosAnimal.Where(a => a.AnimalId == id).ToList();
+            ListaImagesViewModel fotos = new ListaImagesViewModel();
+            fotos.Fotos = list;
+            fotos.AnimalId = animal.Id;
+            return View(fotos);
+        }
+
+        public async Task<IActionResult> ListaPalpacion(int? id)
+        {
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+
+            AnimalEntity animal = _context.Animals.Find(id);
+
+
+            if (animal == null)
+            {
+                return NotFound();
+            }
+
+            if (animal.Sexo == Sex.Macho)
+            {
+                return RedirectToAction($"{nameof(Details)}/{animal.Id}");
+            }
+
+
+            var list = await _context
+                .Palpation
+                .Include(a => a.Animal)
+                .Where(a=>a.Animal.Id==id)
+                .OrderBy(a => a.Animal.Id)
+                .Include(v=>v.Veterinario)
+                .ToListAsync();
+
+            PalpationListViewModel lista = new PalpationListViewModel();
+            lista.palpations = list;
+            
+            lista.AnimalId = animal.Id;
+            return View(lista);
+
+        }
+
+        [HttpGet]
+        public IActionResult AddFoto(int? id)
+        {
+            AnimalEntity animal = _context.Animals.Find(id);
+            FotoViewModel model = new FotoViewModel();
+            model.Animal = animal;
+            model.AnimalId = animal.Id;
+
+            return View("AddFoto", model);
+        }
+
+      
+        public async Task<IActionResult> AddFoto(FotoViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string path = string.Empty;
+
+                if (model.Imagen != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.Imagen, "Animals");
+                    FotosAnimal foto = _converterHelper.ToFotoAnimal(model, path, true);
+                    _context.Add(foto);
+                    AnimalEntity animal = await _context.Animals.FindAsync(foto.AnimalId);
+                    animal.FotoPath = path;
+                    _context.Update(animal);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Details", new { id = foto.AnimalId });
+                }
+
+                return View(model);
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddPalpation(int? id)
+        {
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                AnimalEntity animal = await _context.Animals.FindAsync(id);
+                if (animal == null)
+                {
+                    return NotFound();
+                }
+
+                PalpationViewModel model = new PalpationViewModel
+                {
+                    Animal = animal,
+                    AnimalId = animal.Id,
+                    Vets = _combosHelper.GetVets()                    
+                };
+
+                
+
+                return View(model);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPalpation(PalpationViewModel model)
+        {
+
+
+
+            if (ModelState.IsValid)
+            {
+                
+                Palpation palpation = await _converterHelper.ToPalpationEntity(model,  true);
+                _context.Add(palpation);
+                await _context.SaveChangesAsync();
+
+
+
+
+                return RedirectToAction("ListaPalpacion", new { id = model.AnimalId });
+
+            }
+
+            return View(model);
+        }
+        
+        public async Task<IActionResult> DeletePalpitation(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Palpation pal = _context.Palpation
+                .Include(a=>a.Animal)
+                .Where(p=>p.Id ==id).FirstOrDefault();
+           
+
+            if (pal == null)
+            {
+                return NotFound();
+            }
+
+            _context.Palpation.Remove(pal);
+
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(ListaPalpacion)}/{pal.Animal.Id}");
+
+
+        }
+        public async Task<IActionResult> DeleteFoto(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            FotosAnimal foto = _context.FotosAnimal
+                .Find(id);
+            EliminarFotoCarpeta(foto.FotoPath);
+
+            if (foto == null)
+            {
+                return NotFound();
+            }
+
+            _context.FotosAnimal.Remove(foto);
+
+
+
+            AnimalEntity animal = _context.Animals.Find(foto.AnimalId);
+            var list = _context.FotosAnimal.Where(a => a.AnimalId == foto.AnimalId).ToList();
+            if (list.Count > 0)
+            {
+                var aux = _context.FotosAnimal.Where(a => a.AnimalId == foto.AnimalId).LastOrDefault();               
+                animal.FotoPath = aux.FotoPath; 
+            }
+            {              
+                animal.FotoPath = "~/images/animals/noimage.png";              
+            }
+            _context.Update(animal);
+            await _context.SaveChangesAsync();
+            return RedirectToAction($"{nameof(ListaFotos)}/{animal.Id}");
+
+
+        }
+
+        public void EliminarFotoCarpeta(string ruta)
+        {
+             string LogoFullPath = $"wwwroot{ruta.Substring(1)}";
+
+
+            if (System.IO.File.Exists(LogoFullPath) ==true)
+            {
+                System.IO.File.Delete(LogoFullPath);
+            }
+          
+
+
+        }
+
+
+
     }
 }

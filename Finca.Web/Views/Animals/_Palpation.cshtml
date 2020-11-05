@@ -1,0 +1,22 @@
+﻿@model Finca.Web.Data.Entities.Palpation
+
+<div class="form-group">
+    <label asp-for="Fecha" class="control-label"></label>
+    <input asp-for="Fecha" class="form-control" />
+    <span asp-validation-for="Fecha" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Prenez" class="control-label"></label>
+    <input asp-for="Prenez" class="form-control" />
+    <span asp-validation-for="Prenez" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <input asp-for="Estado" /> @Html.DisplayNameFor(model => model.Estado)
+        </label>
+    </div>
+</div>
+            
+
+        

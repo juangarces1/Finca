@@ -117,6 +117,47 @@ namespace Finca.Web.Helpers
 
             return list;
         }
+
+        public IEnumerable<SelectListItem> GetVets()
+        {
+            var list = _context.Veterinario
+               .Select(a => new SelectListItem
+               {
+                   Text = a.Nombre,
+                   Value = $"{a.Id}"
+               })
+               .OrderBy(t => t.Text)
+               .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un Tipo...]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
+        public IEnumerable<SelectListItem> GetPadres()
+        {
+            var list = _context.Animals
+               .Where(a => a.TypeAnimalId == 4)
+               .Select(a => new SelectListItem
+               {
+                   Text = a.Nombre,
+                   Value = $"{a.NumeroFinca}"
+               })
+               .OrderBy(t => t.Text)
+               .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un Tipo...]",
+                Value = "0"
+            });
+
+            return list;
+        }
     }
 
 }

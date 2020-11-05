@@ -46,7 +46,8 @@ namespace Finca.Web.Controllers
         // GET: TypeAnimalEntities/Create
         public IActionResult Create()
         {
-            return View();
+            TypeAnimalEntity typeAnimalEntity = new TypeAnimalEntity();
+            return View(typeAnimalEntity);
         }
 
         // POST: TypeAnimalEntities/Create

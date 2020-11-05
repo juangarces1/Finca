@@ -14,13 +14,19 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
+      
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
-        [Display(Name = "Fecha Nacimiento")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime FechaNacimiento { get; set; }
 
+        [Display(Name = "Edad")]
+        public int Age { get { return DateTime.Now.Year - FechaNacimiento.Year; } }
+
         [Display(Name = "Peso Nacimiento")]
-        public decimal PesoNacimiento { get; set; }      
+        public decimal PesoNacimiento { get; set; }
+
+        [Display(Name = "Peso Destete")]
+        public decimal PesoDesteto { get; set; }
 
         public int Padre { get; set; }
 
@@ -36,17 +42,11 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Marca Interno")]
         public int MarcaInterno { get; set; }
 
-        public string Tatuaje { get; set; }
-
-        public string Muesca { get; set; }
-
-        public string Chapeta { get; set; }
-
-        public string Arete { get; set; }
-
+     
         public string Marca { get; set; }
 
-        public string Chip { get; set; }
+        [Display(Name = "Activo")]
+        public bool IsActive { get; set; }
 
         public string Observaciones { get; set; }
 
@@ -62,6 +62,7 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Sexo")]
         public Sex Sexo { get; set; }
 
+       
         public LoteEntity Lote { get; set; }
 
     }

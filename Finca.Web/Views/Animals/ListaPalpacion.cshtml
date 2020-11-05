@@ -1,0 +1,90 @@
+﻿@model Finca.Web.Models.PalpationListViewModel
+
+
+<p>
+    <a asp-action="AddPalpation" asp-route-id="@Model.AnimalId" class="btn btn-info"><i class="glyphicon glyphicon-plus">Crear Nueva</i></a>
+</p>
+
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Palpaciones</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover table-responsive table-striped" id="MyTable">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fecha)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Prenez)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Animal.NumeroFinca)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Veterinario.Nombre)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.palpations)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fecha)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Prenez)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Animal.NumeroFinca)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Veterinario.Nombre)
+                            </td>
+                            <td>
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<p>
+    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+
+</p>
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#MyTable').DataTable();
+
+            // Delete item
+            var item_to_delete;
+
+            $('.deleteItem').click((e) => {
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $("#btnYesDelete").click(function () {
+                window.location.href = '/Animals/DeletePalpitation/' + item_to_delete;
+            });
+        });
+    </script>
+}
+
+
+

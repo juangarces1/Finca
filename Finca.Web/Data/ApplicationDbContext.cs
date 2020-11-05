@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using Finca.Web.Data.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Finca.Web.Data.Entities;
 
 namespace Finca.Web.Data
 {
@@ -20,5 +16,13 @@ namespace Finca.Web.Data
         public DbSet<Finca.Web.Data.Entities.TypeAnimalEntity> TypeAnimals { get; set; }
 
         public DbSet<Finca.Web.Data.Entities.LoteEntity> Lotes { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.FotosAnimal> FotosAnimal { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.Expense> Expense { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.Veterinario> Veterinario { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.Palpation> Palpation { get; set; }
     }
 }
