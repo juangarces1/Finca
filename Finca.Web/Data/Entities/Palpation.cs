@@ -11,8 +11,8 @@ namespace Finca.Web.Data.Entities
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime Fecha { get; set; }
 
-        [Display(Name = "Tiempo Preñez")]
-        public TimeSpan Prenez { get; set; }
+        [Display(Name = "Meses")]
+        public int Meses { get; set; }
 
         [Display(Name = "Animal")]
         public AnimalEntity Animal { get; set; }

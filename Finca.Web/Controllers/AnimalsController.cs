@@ -91,6 +91,8 @@ namespace Finca.Web.Controllers
                     }
                    
                 }
+
+
                 AnimalEntity animal = _converterHelper.ToAnimal(model, path, true);
                 _context.Add(animal);
                 if (flagFoto == false)

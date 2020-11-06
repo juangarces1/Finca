@@ -16,7 +16,7 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt>
-            <h5>Numero Animales</h5>
+            Numero Animales
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Animals.Count)
@@ -66,10 +66,8 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.NumeroFinca)
                                 </td>
-                                <td>
-                                    <a asp-action="EditGroup" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
-                                    <a asp-action="DetailsGroup" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon glyphicon-align-justify"></i></a>
-                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                <td>                                   
+                                    <a asp-action="Details" asp-controller="Animals" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon glyphicon-align-justify"></i></a>                                  
                                 </td>
                             </tr>
                         }

@@ -129,7 +129,7 @@ namespace Finca.Web.Helpers
                 Veterinario = await _context.Veterinario.FindAsync(model.VeterinarioId),
                 Fecha = model.Fecha,
                 Id = isNew ? 0 : model.Id,
-                Prenez =model.Prenez,
+                Meses =model.Meses,
                 Estado = model.Estado
             };
         }
@@ -144,7 +144,7 @@ namespace Finca.Web.Helpers
                 VeterinarioId = model.Veterinario.Id,
                 Fecha = model.Fecha,
                 Id=model.Id,
-                Prenez = model.Prenez,
+                Meses = model.Meses,
                 Estado= model.Estado
                
             };
