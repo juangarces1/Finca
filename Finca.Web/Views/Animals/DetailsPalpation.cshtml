@@ -1,12 +1,28 @@
-﻿@model Finca.Web.Models.PalpationListViewModel
+﻿@model Finca.Web.Models.PalpationDetailsViewModel
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+
 <div class="row">
-    <br />
-    <p>
-        <a asp-action="AddPalpation" asp-route-id="@Model.AnimalId" class="btn btn-info"><i class="glyphicon glyphicon-plus">Crear Nueva</i></a>
-    </p>
+
+    <hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Prenez)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Prenez)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Vacia)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Vacia)
+        </dd>
+
+    </dl>
 </div>
+
 
 <div class="col-md-12">
     <div class="panel panel-default">
@@ -18,25 +34,25 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.DisplayNameFor(model => model.Fecha)
+                            Fecha
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Meses)
+                            Meses
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Animal.NumeroFinca)
+                            Numero Finca
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Veterinario.Nombre)
+                            Veterinario
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Estado)
+                            Preñez
                         </th>
-                        <th></th>
+
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.palpations)
+                    @foreach (var item in Model.Palpations)
                     {
                         <tr>
                             <td>
@@ -54,10 +70,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Estado)
                             </td>
-                            <td>
-                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
 
-                            </td>
                         </tr>
                     }
                 </tbody>
@@ -66,11 +79,9 @@
     </div>
 </div>
 <p>
-    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Palapaciones" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
 
 </p>
-
-<partial name="_DeleteDialog" />
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -89,11 +100,12 @@
             });
 
             $("#btnYesDelete").click(function () {
-                window.location.href = '/Animals/DeletePalpitation/' + item_to_delete;
+                window.location.href = '/Animals/Delete/' + item_to_delete;
             });
         });
     </script>
 }
+
 
 
 

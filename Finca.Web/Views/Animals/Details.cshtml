@@ -79,13 +79,23 @@
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.NombreLote)
+          
             </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Tiempo)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Tiempo.Days)
-            </dd>
+            @if (Model.Sexo == Sex.Hembra)
+             { 
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Tiempo)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Tiempo.Days)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Prenez)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Prenez)
+                    </dd>
+             }
 
         </div>
         <div class="col-md-4">

@@ -2,6 +2,7 @@
 using Finca.Web.Data.Entities;
 using Finca.Web.Helpers;
 using Finca.Web.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -173,13 +174,17 @@ namespace Finca.Web.Controllers
             if (animal.Sexo == Sex.Hembra)
             {
                 animale.Tiempo = DiasDesdeUltimoParto(animal);
+                animale.Prenez = ProximoParto(animal);
             }
             animale.Pictures = _context.FotosAnimal.Where(f => f.AnimalId == id).ToList();
             animale.Arbol = ArbolG(animal);
             animale.NombreLote = lotenombre.Name;
             animale.AnimalId = animal.Id;
+          
             return View(animale);
         }
+
+
 
         public List<AnimalEntity> ArbolG(AnimalEntity animal)
         {
@@ -207,17 +212,67 @@ namespace Finca.Web.Controllers
         }
 
         public TimeSpan DiasDesdeUltimoParto(AnimalEntity animal)
-        {
-
+        {           
+            Palpation pal = _context.Palpation
+                .Include(a => a.Animal)
+                .OrderBy(a => a.Fecha)
+                .Where(p => p.Animal.Id == animal.Id).LastOrDefault();
+            TimeSpan tm = new TimeSpan();
+            if (pal != null)
+            {               
+               if(pal.Estado == true)
+                {
+                    return tm;
+                }
+                else
+                {
+                    AnimalEntity aniAux1 = _context.Animals.Where(a => a.Madre == animal.NumeroFinca).OrderBy(a => a.FechaNacimiento).LastOrDefault();
+                    if (aniAux1 != null)
+                    {
+                        TimeSpan tiempo = (DateTime.Now - aniAux1.FechaNacimiento);
+                        return tiempo;
+                    }
+                    return tm;
+                }               
+            }
             AnimalEntity aniAux = _context.Animals.Where(a => a.Madre == animal.NumeroFinca).OrderBy(a => a.FechaNacimiento).LastOrDefault();
             if (aniAux != null)
             {
-                TimeSpan tiempo = (animal.FechaNacimiento - aniAux.FechaNacimiento);
+                TimeSpan tiempo = (DateTime.Now - aniAux.FechaNacimiento);
                 return tiempo;
             }
-            TimeSpan tm = new TimeSpan();
-
             return tm;
+        }
+
+
+        public DateTime ProximoParto(AnimalEntity animal)
+        {
+            DateTime date = new DateTime();
+            Palpation pal = _context.Palpation
+                .Include(a=>a.Animal)
+                .OrderBy(a=>a.Fecha)
+                .Where(p => p.Animal.Id == animal.Id).LastOrDefault();
+
+            if (pal==null)
+            {
+                return date;
+            }
+
+            if (pal.Estado == true)
+            {
+                int var = 9 - pal.Meses ;
+                    var = var * 30;
+                date = DateTime.Now;
+                date = date.AddDays(var);
+                return date;
+
+            }
+            else
+            {
+                return date;
+            }
+
+           
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -309,7 +364,7 @@ namespace Finca.Web.Controllers
             }
 
 
-            AnimalEntity animal = _context.Animals.Find(id);
+            AnimalEntity animal = await _context.Animals.FindAsync(id);
 
 
             if (animal == null)
@@ -335,6 +390,69 @@ namespace Finca.Web.Controllers
             lista.palpations = list;
             
             lista.AnimalId = animal.Id;
+            return View(lista);
+
+        }
+        [HttpGet]       
+        public async Task<IActionResult> DetailsPalpation(string date)
+        {
+
+            DateTime id = DateTime.Parse(date);
+
+            var list = await _context
+                .Palpation
+                .Include(a => a.Animal)
+                .Where(p => p.Fecha == id)
+                .OrderBy(a => a.Animal.Id)
+                .Include(v => v.Veterinario)
+                .ToListAsync();
+
+            int pre = list.Where(l => l.Estado == true).Count();
+            int vacia = list.Where(l => l.Estado == false).Count();
+
+            PalpationDetailsViewModel ppp = new PalpationDetailsViewModel();
+            ppp.Palpations = list;
+            ppp.Prenez = pre;
+            ppp.Vacia = vacia;
+            return View(ppp);
+        }
+
+        public async Task<IActionResult> Palapaciones()
+        {
+
+
+
+            var list = await _context
+                .Palpation
+                .Include(v => v.Veterinario)
+                .OrderBy(p => p.Fecha)
+                .ToListAsync();
+
+            DateTime date = DateTime.Now;
+            List<PalpacionesViewModel> lista = new List<PalpacionesViewModel>();
+           
+            foreach (var item in list)
+            {
+                if (date != item.Fecha)
+                {
+                    var palp = new PalpacionesViewModel
+                    {
+                        Date = item.Fecha,
+                        Veterinario = item.Veterinario.Nombre,
+                        
+                    };
+                    lista.Add(palp);
+                    date = item.Fecha;
+                }
+            }
+
+            foreach (var item in lista)
+            {
+                var registros = _context.Palpation.Where(p => p.Fecha == item.Date)
+                    .Count();
+                item.Numero = registros;
+            }
+           
             return View(lista);
 
         }
@@ -389,14 +507,17 @@ namespace Finca.Web.Controllers
                     return NotFound();
                 }
 
+                Palpation palp =  _context.Palpation.Include(v => v.Veterinario).OrderBy(p => p.Fecha).LastOrDefault();
+
                 PalpationViewModel model = new PalpationViewModel
                 {
                     Animal = animal,
-                    AnimalId = animal.Id,
+                    AnimalId = animal.Id,                   
+                    Fecha = palp.Fecha,
                     Vets = _combosHelper.GetVets()                    
                 };
 
-                
+               
 
                 return View(model);
             }
@@ -405,23 +526,20 @@ namespace Finca.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPalpation(PalpationViewModel model)
         {
+            if (model.VeterinarioId != 0)
+            {              
 
-
-
-            if (ModelState.IsValid)
-            {
-                
                 Palpation palpation = await _converterHelper.ToPalpationEntity(model,  true);
                 _context.Add(palpation);
                 await _context.SaveChangesAsync();
-
-
-
-
-                return RedirectToAction("ListaPalpacion", new { id = model.AnimalId });
-
+                return RedirectToAction("Index");
             }
-
+            ViewBag.Error = "Debe Seleccionar un Veterinario";
+            AnimalEntity animal = await _context.Animals.FindAsync(model.AnimalId);
+            model.Animal = animal;
+            model.Vets =  _combosHelper.GetVets();
+            Palpation palp = _context.Palpation.Include(v => v.Veterinario).OrderBy(p => p.Fecha).LastOrDefault();
+            model.Fecha = palp.Fecha;
             return View(model);
         }
         

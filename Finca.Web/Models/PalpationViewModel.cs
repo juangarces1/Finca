@@ -10,6 +10,7 @@ namespace Finca.Web.Models
 {
     public class PalpationViewModel : Palpation
     {
+        [Required(ErrorMessage = "Debe Seleccionar {0}")]
         public int VeterinarioId { get; set; }
 
         public int AnimalId { get; set; }
