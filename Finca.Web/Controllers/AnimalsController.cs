@@ -403,7 +403,7 @@ namespace Finca.Web.Controllers
                 .Palpation
                 .Include(a => a.Animal)
                 .Where(p => p.Fecha == id)
-                .OrderBy(a => a.Animal.Id)
+                .OrderBy(a => a.Animal.NumeroFinca)
                 .Include(v => v.Veterinario)
                 .ToListAsync();
 
@@ -603,6 +603,30 @@ namespace Finca.Web.Controllers
             return RedirectToAction($"{nameof(ListaFotos)}/{animal.Id}");
 
 
+        }
+
+        [HttpGet]
+        public  IActionResult Nacimientos()
+        {
+
+            List<Palpation> palpations = _context.Palpation
+                .Include(a => a.Animal)
+                .Where(p=>p.Estado == true)
+                .OrderBy(a => a.Fecha)
+                .ToList();
+
+            List<NacimientosViewModel> listaPalpacionesUltima = palpations
+                                      .GroupBy(l => l.Animal.Id)
+                                      .Select(cl => new NacimientosViewModel
+                                      {   Fecha = cl.LastOrDefault().Fecha,
+                                          animal = cl.FirstOrDefault().Animal                                          
+                                      }).ToList();
+
+            foreach (var item in listaPalpacionesUltima)
+            {
+                item.Fecha = ProximoParto(item.animal);               
+            }
+            return View(listaPalpacionesUltima);
         }
 
         public void EliminarFotoCarpeta(string ruta)
