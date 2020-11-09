@@ -24,5 +24,9 @@ namespace Finca.Web.Data
         public DbSet<Finca.Web.Data.Entities.Veterinario> Veterinario { get; set; }
 
         public DbSet<Finca.Web.Data.Entities.Palpation> Palpation { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.AddPesoTemEntity> Pesos { get; set; }
+
+        public DbSet<Finca.Web.Data.Entities.PesajeEntity> Pesajes { get; set; }
     }
 }

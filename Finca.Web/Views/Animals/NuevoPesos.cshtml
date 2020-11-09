@@ -1,0 +1,113 @@
+﻿@model Finca.Web.Models.PesajesViewModel
+<br />
+<h3>@ViewBag.Error</h3>
+<h3>@ViewBag.Message</h3>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NuevoPesos">
+           
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="Fecha" class="control-label"></label>
+                    <input asp-for="Fecha" class="form-control" />
+                    <span asp-validation-for="Fecha" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <a asp-action="AddPesos" class="btn btn-primary"><i class="glyphicon glyphicon-align-justify"></i>Agregar Peso</a>
+                    <input type="submit" value="Guardar" class="btn btn-success" />
+                </div>
+            </div>          
+
+            <br />
+        </form>
+    </div>
+</div>
+
+@if (Model.Pesos.Count > 0)
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Pesos</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover table-responsive table-striped" id="MyTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Numero Finca
+                                    </th>
+                                    <th>
+                                        Nombre
+                                    </th>
+
+                                    <th>
+                                        Peso
+                                    </th>
+
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Pesos)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Animal.NumeroFinca)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Animal.Nombre)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Peso)
+                                        </td>
+
+                                        <td>
+                                            <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+<br />
+
+<br />
+<p>
+    <a asp-action="Index" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+
+</p>
+
+
+<partial name="_DeleteDialog" />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+    <script type="text/javascript">
+                    $(document).ready(function () {
+
+                        // Delete item
+                        var item_to_delete;
+
+                        $('.deleteItem').click((e) => {
+                            item_to_delete = e.currentTarget.dataset.id;
+                        });
+
+                        $("#btnYesDelete").click(function () {
+                            window.location.href = '/Animals/DeletePeso/' + item_to_delete;
+                        });
+                    });
+    </script>
+}

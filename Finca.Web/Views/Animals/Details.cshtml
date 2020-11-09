@@ -29,6 +29,12 @@
             <dd>
                 @Html.DisplayFor(model => model.PesoDesteto)
             </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.PesoActual)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.PesoActual)
+            </dd>
 
             <dt>
                 @Html.DisplayNameFor(model => model.NumeroFinca)
@@ -79,23 +85,23 @@
             </dt>
             <dd>
                 @Html.DisplayFor(model => model.NombreLote)
-          
+
             </dd>
             @if (Model.Sexo == Sex.Hembra)
-             { 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Tiempo)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Tiempo.Days)
-                    </dd>
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Prenez)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Prenez)
-                    </dd>
-             }
+            {
+                <dt>
+                    @Html.DisplayNameFor(model => model.Tiempo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Tiempo.Days)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Prenez)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Prenez)
+                </dd>
+            }
 
         </div>
         <div class="col-md-4">
@@ -111,6 +117,7 @@
 <div>
     <a asp-action="ListaFotos" asp-route-id="@Model.AnimalId" class="btn btn-warning">Fotos</a>
     <a asp-action="ListaPalpacion" asp-route-id="@Model.AnimalId" class="btn btn-primary">Palpacion</a>
+    <button data-id="@Model.AnimalId" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
 
 </div>
 <br />
@@ -197,7 +204,6 @@
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
 
                                     </td>
                                 </tr>
@@ -293,8 +299,6 @@
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-align-justify"></i></a>
-                                        <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
-                                        <a asp-action="Arbol" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-tree-deciduous"></i></a>
                                     </td>
                                 </tr>
                             }
@@ -306,8 +310,55 @@
     </div>
 }
 <br />
+@if (Model.Pesos != null)
+{
+    @if (Model.Pesos.Count > 0) { 
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Pesos</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-responsive table-striped" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                   Fecha
+                                </th>
+                                <th>
+                                  Peso
+                                </th>                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Pesos.OrderBy(p => p.Fecha))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fecha)
+                                    </td>
+                                   
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Peso)
+                                    </td>                                   
+                                    <td>
+                                        <button data-id="@item.Id" class="btn btn-danger deleteItemPeso" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+}
+<br />
 <p>
-    <a asp-action="Index"  class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Index" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
 
 </p>
 
@@ -324,13 +375,26 @@
 
             // Delete item
             var item_to_delete;
+            var toDelete;
 
             $('.deleteItem').click((e) => {
+                toDelete = 1;
+                item_to_delete = e.currentTarget.dataset.id;
+            });
+
+            $('.deleteItemPeso').click((e) => {
+                toDelete = 2;
                 item_to_delete = e.currentTarget.dataset.id;
             });
 
             $("#btnYesDelete").click(function () {
-                window.location.href = '/Animals/Delete/' + item_to_delete;
+                if (toDelete == 1) {
+                    window.location.href = '/Animals/Delete/' + item_to_delete;
+                } else {
+                    window.location.href = '/Animals/DeletePesaje/' + item_to_delete;
+                }
+
+               
             });
         });
     </script>

@@ -17,11 +17,11 @@ namespace Finca.Web.Helpers
             _context = context;
         }
 
-        public IEnumerable<SelectListItem> GetComboAnimal()
+        public IEnumerable<SelectListItem> GetComboAnimalNumeroFinca()
         {
             List<SelectListItem> list = _context.Animals.Select(t => new SelectListItem
             {
-                Text = t.Nombre,
+                Text = t.NumeroFinca.ToString(),
                 Value = $"{t.Id}"
             })
                 .OrderBy(t => t.Text)

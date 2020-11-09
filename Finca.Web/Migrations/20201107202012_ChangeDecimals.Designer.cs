@@ -4,37 +4,22 @@ using Finca.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Finca.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201107202012_ChangeDecimals")]
+    partial class ChangeDecimals
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.14-servicing-32113")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Finca.Web.Data.Entities.AddPesoTemEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AnimalId1");
-
-                    b.Property<decimal>("Peso");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimalId1");
-
-                    b.ToTable("Pesos");
-                });
 
             modelBuilder.Entity("Finca.Web.Data.Entities.AnimalEntity", b =>
                 {
@@ -154,26 +139,6 @@ namespace Finca.Web.Migrations
                     b.HasIndex("VeterinarioId");
 
                     b.ToTable("Palpation");
-                });
-
-            modelBuilder.Entity("Finca.Web.Data.Entities.PesajeEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AnimalId");
-
-                    b.Property<DateTime>("Fecha");
-
-                    b.Property<decimal>("Peso")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimalId");
-
-                    b.ToTable("Pesajes");
                 });
 
             modelBuilder.Entity("Finca.Web.Data.Entities.TypeAnimalEntity", b =>
@@ -371,13 +336,6 @@ namespace Finca.Web.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Finca.Web.Data.Entities.AddPesoTemEntity", b =>
-                {
-                    b.HasOne("Finca.Web.Data.Entities.AnimalEntity", "Animal")
-                        .WithMany()
-                        .HasForeignKey("AnimalId1");
-                });
-
             modelBuilder.Entity("Finca.Web.Data.Entities.AnimalEntity", b =>
                 {
                     b.HasOne("Finca.Web.Data.Entities.LoteEntity", "Lote")
@@ -402,19 +360,12 @@ namespace Finca.Web.Migrations
             modelBuilder.Entity("Finca.Web.Data.Entities.Palpation", b =>
                 {
                     b.HasOne("Finca.Web.Data.Entities.AnimalEntity", "Animal")
-                        .WithMany("Palpaciones")
+                        .WithMany()
                         .HasForeignKey("AnimalId");
 
                     b.HasOne("Finca.Web.Data.Entities.Veterinario", "Veterinario")
                         .WithMany("Palpations")
                         .HasForeignKey("VeterinarioId");
-                });
-
-            modelBuilder.Entity("Finca.Web.Data.Entities.PesajeEntity", b =>
-                {
-                    b.HasOne("Finca.Web.Data.Entities.AnimalEntity", "Animal")
-                        .WithMany("Pesos")
-                        .HasForeignKey("AnimalId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

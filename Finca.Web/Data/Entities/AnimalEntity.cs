@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,9 +23,11 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Edad")]
         public int Age { get { return DateTime.Now.Year - FechaNacimiento.Year; } }
 
+        [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Peso Nacimiento")]
         public decimal PesoNacimiento { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Peso Destete")]
         public decimal PesoDesteto { get; set; }
 
@@ -55,9 +58,13 @@ namespace Finca.Web.Data.Entities
 
         public TypeAnimalEntity TypeAnimal { get; set; }
 
+        public ICollection<PesajeEntity> Pesos { get; set; }
+
+        public ICollection<Palpation> Palpaciones { get; set; }
+
         public string FotoFullPath => string.IsNullOrEmpty(FotoPath)
-        ? "https://kilosmedellin.com//images/noimage.png"
-        : $"https://kilosmedellin.com{FotoPath.Substring(1)}";
+        ? "https://haciendalasvegas.azurewebsites.net///images/noimage.png"
+        : $"https://haciendalasvegas.azurewebsites.net{FotoPath.Substring(1)}";
 
         [Display(Name = "Sexo")]
         public Sex Sexo { get; set; }

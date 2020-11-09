@@ -14,5 +14,9 @@ namespace Finca.Web.Data.Entities
         public string FotoPath { get; set; }
 
         public virtual AnimalEntity Animal { get; set; }
+
+        public string FotoFullPath => string.IsNullOrEmpty(FotoPath)
+       ? "https://haciendalasvegas.azurewebsites.net///images/noimage.png"
+       : $"https://haciendalasvegas.azurewebsites.net{FotoPath.Substring(1)}";
     }
 }

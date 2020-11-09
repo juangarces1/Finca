@@ -21,5 +21,7 @@ namespace Finca.Web.Helpers
         Task<Palpation> ToPalpationEntity(PalpationViewModel model, bool isNew);
 
         PalpationViewModel ToPalpationViewModel(Palpation model);
+
+       
     }
 }

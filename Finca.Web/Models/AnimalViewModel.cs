@@ -40,5 +40,9 @@ namespace Finca.Web.Models
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime Prenez { get; set; }
+
+     
+        [Display(Name = "Ultimo Peso")]
+        public decimal PesoActual { get; set; }
     }
 }

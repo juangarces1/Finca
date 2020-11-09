@@ -40,7 +40,9 @@ namespace Finca.Web.Helpers
                 TypeAnimal = model.TypeAnimal,
                 LoteId=model.LoteId,
                 TypeAnimalId=model.TypeAnimalId,
-                Lote=model.Lote
+                Lote=model.Lote,
+                Pesos=model.Pesos
+               
                  
 
             };
@@ -68,7 +70,8 @@ namespace Finca.Web.Helpers
                 TypeAnimalId = model.TypeAnimalId,
                 Lote = model.Lote,
                 Crias = crias,
-                FotoPath = model.FotoPath
+                FotoPath = model.FotoPath,
+                Pesos=model.Pesos
 
 
             };
@@ -151,6 +154,7 @@ namespace Finca.Web.Helpers
         }
 
 
+      
     }
 }
 

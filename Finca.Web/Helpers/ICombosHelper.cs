@@ -7,7 +7,7 @@ namespace Finca.Web.Helpers
 {
     public interface ICombosHelper
     {
-        IEnumerable<SelectListItem> GetComboAnimal();
+        IEnumerable<SelectListItem> GetComboAnimalNumeroFinca();
 
         IEnumerable<SelectListItem> GetComboAnimal(TypeAnimalEntity typeAnimal);
 
