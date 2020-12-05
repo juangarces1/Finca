@@ -41,7 +41,8 @@ namespace Finca.Web.Helpers
                 LoteId=model.LoteId,
                 TypeAnimalId=model.TypeAnimalId,
                 Lote=model.Lote,
-                Pesos=model.Pesos
+                Pesos=model.Pesos,
+                IsPrenez = model.IsPrenez
                
                  
 
@@ -71,7 +72,8 @@ namespace Finca.Web.Helpers
                 Lote = model.Lote,
                 Crias = crias,
                 FotoPath = model.FotoPath,
-                Pesos=model.Pesos
+                Pesos=model.Pesos,
+                IsPrenez=model.IsPrenez
 
 
             };
@@ -97,7 +99,8 @@ namespace Finca.Web.Helpers
                 LoteId = model.LoteId,
                 TypeAnimalId = model.TypeAnimalId,
                 Lote = model.Lote,
-                FotoPath = model.FotoPath
+                FotoPath = model.FotoPath,
+                IsPrenez =model.IsPrenez
 
             };
         }

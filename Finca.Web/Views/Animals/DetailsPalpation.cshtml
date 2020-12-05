@@ -2,34 +2,35 @@
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
-<div class="row">
-
-    <hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Prenez)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Prenez)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Vacia)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Vacia)
-        </dd>
-
-    </dl>
-</div>
 
 
-<div class="col-md-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Palpaciones</h3>
+<div class="container">
+    <dl class="row">
+        <div class="col-lg-4">
+            <dt>
+                @Html.DisplayNameFor(model => model.Prenez)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Prenez)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Vacia)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Vacia)
+            </dd>
         </div>
-        <div class="panel-body">
+    </dl>
+
+ </div>
+
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <b>Palpaciones</b>
+        </div>
+        <div class="card-body">
             <table class="table table-hover table-responsive table-striped" id="MyTable">
                 <thead>
                     <tr>
@@ -68,7 +69,9 @@
                                 @Html.DisplayFor(modelItem => item.Veterinario.Nombre)
                             </td>
                             <td>
+
                                 @Html.DisplayFor(modelItem => item.Estado)
+
                             </td>
 
                         </tr>
@@ -79,7 +82,7 @@
     </div>
 </div>
 <p>
-    <a asp-action="Palapaciones" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Palapaciones" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
 
 </p>
 

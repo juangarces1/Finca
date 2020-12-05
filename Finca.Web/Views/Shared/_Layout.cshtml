@@ -6,45 +6,155 @@
     <title>@ViewData["Title"] - Finca.Web</title>
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+
+
+        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/vendor.min.css" />
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+       
     </environment>
+   
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Finca.Web</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="TypeAnimalEntities" asp-action="Index">Tipo Animal</a></li>
-                    <li><a asp-area="" asp-controller="LoteEntities" asp-action="Index">Lotes</a></li>
-                    <li><a asp-area="" asp-controller="Animals" asp-action="Index">Animales</a></li>
-                    <li><a asp-area="" asp-controller="Expenses" asp-action="Index">Gastos</a></li>
-                    <li><a asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinarios</a></li>
-                    <li><a asp-area="" asp-controller="Animals" asp-action="Palapaciones">Palpaciones</a></li>
-                    <li><a asp-area="" asp-controller="Animals" asp-action="Nacimientos">Nacimientos</a></li>
-                    <li><a asp-area="" asp-controller="Animals" asp-action="NuevoPesos">Pesos</a></li>
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Las Vegas</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="" asp-controller="Animals" asp-action="Index">
+                        Animales
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="TypeAnimalEntities" asp-action="Index">Tipo Animal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="LoteEntities" asp-action="Index">Lotes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Expenses" asp-action="Index">Gastos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinarios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinarios</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" 
+                       data-toggle="dropdown" href="#"
+                       role="button" aria-haspopup="true" 
+                       aria-expanded="false">Animales</a>
+                    <div class="dropdown-menu">
+                        
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Palapaciones">Palpaciones</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Nacimientos">Nacimientos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="NuevoPesos">Pesos</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Index">Todos</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="IndexPrenez">Preñadas</a>
+                    </div>
+                </li>
+            </ul>
+           
         </div>
     </nav>
+
+    @*<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="TypeAnimalEntities" asp-action="Index">Tipo Animal</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinarios</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Palapaciones">Palpaciones</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Nacimientos">Nacimientos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="NuevoPesos">Pesos</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="Index">Todos</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Animals" asp-action="IndexPrenez">Preñadas</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>*@
+
+    @*<nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Las Vegas</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-area="" asp-controller="TypeAnimalEntities" asp-action="Index">Tipo Animal</a></li>
+                        <li><a asp-area="" asp-controller="LoteEntities" asp-action="Index">Lotes</a></li>
+
+                        <li><a asp-area="" asp-controller="Expenses" asp-action="Index">Gastos</a></li>
+                        <li><a asp-area="" asp-controller="Veterinarios" asp-action="Index">Veterinarios</a></li>
+                        <li><a asp-area="" asp-controller="Animals" asp-action="Palapaciones">Palpaciones</a></li>
+                        <li><a asp-area="" asp-controller="Animals" asp-action="Nacimientos">Nacimientos</a></li>
+                        <li><a asp-area="" asp-controller="Animals" asp-action="NuevoPesos">Pesos</a></li>
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Animales <b class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+                                <li><a asp-area="" asp-controller="Animals" asp-action="Index">Todos</a></li>
+                                <li><a asp-area="" asp-controller="Animals" asp-action="IndexPrenez">Preñadas</a></li>
+                                <li><a href="#">Machos</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Nav header</li>
+                                <li><a href="#">Vacias</a></li>
+                                <li><a href="#">Destetos</a></li>
+                            </ul>
+                        <li>
+
+                    </ul>
+
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>*@
 
     <partial name="_CookieConsentPartial" />
 
@@ -57,20 +167,19 @@
     </div>
 
     <environment include="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/jquery/jquery.js"></script>
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/vendor.min.js"></script>
     </environment>
     <environment exclude="Development">
-        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"
                 asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
                 asp-fallback-test="window.jQuery"
                 crossorigin="anonymous"
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.3/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">

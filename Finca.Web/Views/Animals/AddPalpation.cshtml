@@ -23,7 +23,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" />
-                <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-success">Regresar</a>
+                <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
             </div>
         </form>
     </div>
@@ -31,4 +31,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
 }

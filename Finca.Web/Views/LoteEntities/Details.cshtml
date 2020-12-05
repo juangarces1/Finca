@@ -4,6 +4,130 @@
     ViewData["Title"] = "Details";
 }
 
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #myImg {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        #myImg:hover {
+            opacity: 0.7;
+        }
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+
+    /* Caption of Modal Image */
+    #caption {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+        text-align: center;
+        color: #ccc;
+        padding: 10px 0;
+        height: 150px;
+    }
+
+    /* Add Animation */
+    .modal-content, #caption {
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @@-webkit-keyframes zoom {
+        from {
+            -webkit-transform: scale(0)
+        }
+
+        to {
+            -webkit-transform: scale(1)
+        }
+    }
+
+    @@keyframes zoom {
+        from {
+            transform: scale(0)
+        }
+
+        to {
+            transform: scale(1)
+        }
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* 100% Image Width on Smaller Screens */
+    @@media only screen and (max-width: 700px) {
+        .modal-content {
+            width: 100%;
+        }
+    }
+</style>
+<script>
+    function myFunction(src) {
+        var modal = document.getElementById("myModal");
+      
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modal.style.display = "block";
+        modalImg.src = src;
+        captionText.innerHTML = "Image";
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+    }
+</script>
 <h2>Detalle</h2>
 
 <div>
@@ -24,58 +148,68 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    
 </div>
 <br />
 <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Animales</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover table-responsive table-striped" id="MyTable">
-                    <thead>
+    <div class="card border-secondary mb-3">
+        <div class="card-header">
+            <b>@Model.Name</b>
+            <a asp-action="Index" class="btn btn-secondary float-lg-right"> <i class="fas fa-arrow-circle-left"></i> Atras</a>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning float-lg-right"> <i class="fas fa-pencil-alt"></i></a>
+
+        </div>
+        <div class="card-body">
+            <table class="table table-hover table-responsive table-striped" id="MyTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th>
+                            Foto
+                        </th>
+                        <th>
+                            Numero
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="mytbody">
+                    @foreach (var item in Model.Animals)
+                    {
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Name)
-                            </th>
-                            <th>
-                                Foto
-                            </th>
-                            <th>
-                                Numero
-                            </th>
-                            <th></th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td alt="imagen">
+                                @if (!string.IsNullOrEmpty(item.FotoPath))
+                                {
+                                    <img src="@Url.Content(item.FotoPath)"
+                                         alt="Image"
+                                         style="width:100px;height:100px;max-width: 75%; height: auto;"
+                                         onclick="myFunction(this.src)" />
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NumeroFinca)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-controller="Animals" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list-ul"></i></a>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Animals)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Nombre)
-                                </td>
-                                <td>
-                                    @if (!string.IsNullOrEmpty(item.FotoPath))
-                                    {
-                                        <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:100px;height:100px;max-width: 75%; height: auto;" />
-                                    }
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.NumeroFinca)
-                                </td>
-                                <td>                                   
-                                    <a asp-action="Details" asp-controller="Animals" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon glyphicon-align-justify"></i></a>                                  
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
 </div>
 
 @section Scripts {
@@ -83,20 +217,14 @@
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#MyTable').DataTable();
+            $(document).ready(function () {
+                $('#MyTable').DataTable();
 
-            // Delete item
-            var item_to_delete;
 
-            $('.deleteItem').click((e) => {
-                item_to_delete = e.currentTarget.dataset.id;
+                // Delete item
+              
             });
-
-            $("#btnYesDelete").click(function () {
-                window.location.href = '/LoteEntities/Delete/' + item_to_delete;
-            });
-        });
     </script>
+
 }
 

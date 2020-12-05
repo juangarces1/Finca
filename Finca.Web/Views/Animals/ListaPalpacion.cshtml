@@ -1,19 +1,15 @@
 ﻿@model Finca.Web.Models.PalpationListViewModel
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
-<div class="row">
-    <br />
-    <p>
-        <a asp-action="AddPalpation" asp-route-id="@Model.AnimalId" class="btn btn-info"><i class="glyphicon glyphicon-plus">Crear Nueva</i></a>
-    </p>
-</div>
 
-<div class="col-md-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Palpaciones</h3>
-        </div>
-        <div class="panel-body">
+
+<div class="row">
+    
+    <div class="card-header">
+        <b>Palpaciones</b>
+        <a asp-action="AddPalpation" asp-route-id="@Model.AnimalId" class="btn btn-primary"><i class="fas fa-plus-square">Crear Nueva</i></a>
+    </div>
+        <div class="card-body">
             <table class="table table-hover table-responsive table-striped" id="MyTable">
                 <thead>
                     <tr>
@@ -55,7 +51,7 @@
                                 @Html.DisplayFor(modelItem => item.Estado)
                             </td>
                             <td>
-                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
 
                             </td>
                         </tr>
@@ -63,10 +59,10 @@
                 </tbody>
             </table>
         </div>
-    </div>
+   
 </div>
 <p>
-    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
 
 </p>
 

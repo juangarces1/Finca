@@ -37,12 +37,14 @@ namespace Finca.Web.Models
         public int AnimalId { get; set; }
 
         [Display(Name = "Proximo Parto")]
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = false)]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime Prenez { get; set; }
 
      
         [Display(Name = "Ultimo Peso")]
         public decimal PesoActual { get; set; }
+
+        public int MadreId { get; set; }
     }
 }

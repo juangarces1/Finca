@@ -27,7 +27,8 @@ namespace Finca.Web.Migrations
 
                     b.Property<int?>("AnimalId1");
 
-                    b.Property<decimal>("Peso");
+                    b.Property<decimal>("Peso")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -47,6 +48,8 @@ namespace Finca.Web.Migrations
                     b.Property<string>("FotoPath");
 
                     b.Property<bool>("IsActive");
+
+                    b.Property<bool>("IsPrenez");
 
                     b.Property<int>("LoteId");
 
@@ -77,6 +80,9 @@ namespace Finca.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LoteId");
+
+                    b.HasIndex("NumeroFinca")
+                        .IsUnique();
 
                     b.HasIndex("TypeAnimalId");
 

@@ -10,7 +10,7 @@ namespace Finca.Web.Data.Entities
     {
         public int Id { get; set; }
 
-        [Display(Name = "Lote ")]
+        [Display(Name = "Nombre ")]
         public string Name { get; set; }
 
 

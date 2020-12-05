@@ -9,13 +9,13 @@
             <div class="form-group">
                 <div class="form-group">
                     <label asp-for="Fecha" class="control-label"></label>
-                    <input asp-for="Fecha" class="form-control" />
+                    <input asp-for="Fecha" type="date" class="form-control" />
                     <span asp-validation-for="Fecha" class="text-danger"></span>
                 </div>
 
 
                 <div class="form-group">
-                    <a asp-action="AddPesos" class="btn btn-primary"><i class="glyphicon glyphicon-align-justify"></i>Agregar Peso</a>
+                    <a asp-action="AddPesos" class="btn btn-primary"><i class="fas fa-list-ul"></i>Agregar Peso</a>
                     <input type="submit" value="Guardar" class="btn btn-success" />
                 </div>
             </div>          
@@ -28,12 +28,12 @@
 @if (Model.Pesos.Count > 0)
     {
         <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Pesos</h3>
+           
+                <div class="card">
+                    <div class="card-header">
+                        <b>Pesos</b>
                     </div>
-                    <div class="panel-body">
+                    <div class="card-body">
                         <table class="table table-hover table-responsive table-striped" id="MyTable">
                             <thead>
                                 <tr>
@@ -67,7 +67,7 @@
                                         </td>
 
                                         <td>
-                                            <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
+                                            <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
 
                                         </td>
                                     </tr>
@@ -77,13 +77,12 @@
                     </div>
                 </div>
             </div>
-        </div>
     }
 <br />
 
 <br />
 <p>
-    <a asp-action="Index" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
 
 </p>
 

@@ -1,0 +1,1 @@
+﻿update animals set IsPrenez = '0'

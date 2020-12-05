@@ -17,8 +17,10 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Peso Nacimiento")]
         public decimal Peso { get; set; }
 
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = false)]
+
+      
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime Fecha { get; set; }
 
     }

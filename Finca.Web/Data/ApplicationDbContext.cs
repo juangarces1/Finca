@@ -28,5 +28,14 @@ namespace Finca.Web.Data
         public DbSet<Finca.Web.Data.Entities.AddPesoTemEntity> Pesos { get; set; }
 
         public DbSet<Finca.Web.Data.Entities.PesajeEntity> Pesajes { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<AnimalEntity>()
+                .HasIndex(t => t.NumeroFinca)
+                .IsUnique();
+        }
     }
 }

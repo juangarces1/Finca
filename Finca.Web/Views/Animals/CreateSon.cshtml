@@ -1,0 +1,104 @@
+﻿
+@model Finca.Web.Models.AnimalViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Crear</h2>
+
+<h4>Animal</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateSon" enctype="multipart/form-data">
+            <input asp-for="Madre" type="hidden" />
+            <input asp-for="MarcaInterno" type="hidden" />
+            <input asp-for="MadreId" type="hidden" />
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Padres" class="control-label"></label>
+                <select asp-for="Padre" asp-items="Model.Padres" class="form-control"></select>
+                <span asp-validation-for="Padre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Tipos" class="control-label"></label>
+                <select asp-for="TypeAnimalId" asp-items="Model.Tipos" class="form-control"></select>
+                <span asp-validation-for="TypeAnimalId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lotes" class="control-label"></label>
+                <select asp-for="LoteId" asp-items="Model.Lotes" class="form-control"></select>
+                <span asp-validation-for="LoteId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaNacimiento" class="control-label"></label>
+                <input asp-for="FechaNacimiento" class="form-control" />
+                <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PesoNacimiento" class="control-label"></label>
+                <input asp-for="PesoNacimiento" class="form-control" />
+                <span asp-validation-for="PesoNacimiento" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PesoDesteto" class="control-label"></label>
+                <input asp-for="PesoDesteto" class="form-control" />
+                <span asp-validation-for="PesoDesteto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroFinca" class="control-label"></label>
+                <input asp-for="NumeroFinca" class="form-control" />
+                <span asp-validation-for="NumeroFinca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Marca" class="control-label"></label>
+                <input asp-for="Marca" class="form-control" />
+                <span asp-validation-for="Marca" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Observaciones" class="control-label"></label>
+                <input asp-for="Observaciones" class="form-control" />
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sexo" class="control-label"></label>
+                <select asp-for="Sexo" asp-items="Html.GetEnumSelectList<Sex>()" class="form-control">
+                    <option selected="selected" value="">[Seleccione...]</option>>
+                </select>
+                <span asp-validation-for="Sexo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

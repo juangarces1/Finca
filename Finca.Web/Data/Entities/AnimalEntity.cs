@@ -15,9 +15,9 @@ namespace Finca.Web.Data.Entities
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
-      
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd HH:mm}", ApplyFormatInEditMode = false)]
+        [Display(Name = "Nacimiento")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime FechaNacimiento { get; set; }
 
         [Display(Name = "Edad")]
@@ -50,6 +50,9 @@ namespace Finca.Web.Data.Entities
 
         [Display(Name = "Activo")]
         public bool IsActive { get; set; }
+
+        [Display(Name = "Preñez")]
+        public bool IsPrenez { get; set; }
 
         public string Observaciones { get; set; }
 

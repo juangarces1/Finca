@@ -4,14 +4,14 @@
 {
     <br />
     <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Fotos</h3>
+       
+            <div class="card">
+                <div class="card-header">
+                    <b>Fotos</b>                  
                 </div>
                 <div class="panel-body">
                     <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-                        <ol class="carousel-indicators">
+                        <ul class="carousel-indicators">
                             @{int conta = 0; }
                             @for (var i = 0; i < Model.Fotos.Count; i++)
                             {
@@ -26,21 +26,18 @@
                                     <li data-target="#myCarousel" data-slide-to="@i"></li>
                                 }
                             }
-
-
-                        </ol>
-                        <div class="carousel-inner" role="listbox">
+                        </ul>
+                        <div class="carousel-inner">
                             @{int cont = 0; }
                             @foreach (var item in Model.Fotos)
                             {
-                                var itemDinamico = cont++ == 0 ? "item active" : "item";
+                                var itemDinamico = cont++ == 0 ? "carousel-item active" : "carousel-item";
 
                                 <div class="@itemDinamico">
-                                    <img src="@Url.Content(item.FotoPath)" alt="" class="img-responsive" />
+                                    <img src="@Url.Content(item.FotoPath)" alt="" width="600" />
                                 </div>
                             }
                         </div>
-
                         <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
@@ -52,24 +49,19 @@
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 }
-<br />
-<p>
-    <a asp-action="AddFoto" asp-route-id="@Model.AnimalId" class="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i>Agregar Foto</a>
-</p>
+<hr />
 
-<br />
-<br />
+
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Animales</h3>
+        <div class="card">
+            <div class="card-header">
+                <b>Fotos</b> 
+                <a asp-action="AddFoto" asp-route-id="@Model.AnimalId" class="btn btn-primary float-lg-right"><i class="fas fa-plus-square"></i>Agregar Foto</a>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
@@ -90,23 +82,19 @@
                                         <img src="@Url.Content(item.FotoPath)" alt="Image" style="width:100px;height:100px;max-width: 100%; height: auto;" />
                                     }
                                 </td>
-
                                 <td>
-
-
-                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="glyphicon glyphicon-trash"></i></button>
-
-                                </td>
+                                    <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class="fas fa-trash"></i></button>
+                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-    </div>
+    
 </div>
 <p>
-    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-default"><i class="glyphicon glyphicon-circle-arrow-left"></i>Volver</a>
+    <a asp-action="Details" asp-route-id="@Model.AnimalId" class="btn btn-secondary"><i class="fas fa-arrow-circle-left"></i>Volver</a>
 
 </p>
 

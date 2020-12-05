@@ -1,7 +1,4 @@
-﻿using Finca.Web.Data.Entities;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,6 +9,7 @@ namespace Finca.Web.Data.Entities
     {
         public int Id { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         [Display(Name = "Peso ")]
         [Required(ErrorMessage = "Debe Ingresar el peso")]
         public decimal Peso { get; set; }

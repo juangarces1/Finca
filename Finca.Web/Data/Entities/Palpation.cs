@@ -9,6 +9,7 @@ namespace Finca.Web.Data.Entities
 
         [Required(ErrorMessage = "Debe la fecha {0}")]
         [Display(Name = "Fecha")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = false)]
         public DateTime Fecha { get; set; }
 
